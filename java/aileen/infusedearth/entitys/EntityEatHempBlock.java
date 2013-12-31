@@ -10,9 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
-/**
- * Created by Aileen on 30.12.13.
- */
 public class EntityEatHempBlock {
     public static double rand;
 
