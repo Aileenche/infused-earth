@@ -1,44 +1,19 @@
 // Copyright 2013 by Aileen Kutschik (aileen.kutschik@web.de)
 package aileen.infusedearth;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockTorch;
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.OreDictionary;
 import aileen.infusedearth.World.main;
 import aileen.infusedearth.blocks.HempBlock;
 import aileen.infusedearth.blocks.HempPlant;
 import aileen.infusedearth.blocks.ore_selenium;
+import aileen.infusedearth.entitys.EntityEatHempBlock;
 import aileen.infusedearth.entitys.VanillaMobDrops;
-import aileen.infusedearth.items.BoneLarge;
-import aileen.infusedearth.items.BoneMedium;
-import aileen.infusedearth.items.BoneSmall;
-import aileen.infusedearth.items.BoneTiny;
-import aileen.infusedearth.items.HempLeaves;
-import aileen.infusedearth.items.HempSeeds;
-import aileen.infusedearth.items.ItemAppleSorbet;
-import aileen.infusedearth.items.ItemGlassBowl;
-import aileen.infusedearth.items.ItemHempCookie;
-import aileen.infusedearth.items.SeleniumTorch;
-import aileen.infusedearth.items.axeSelenium;
-import aileen.infusedearth.items.clock;
-import aileen.infusedearth.items.hempCookieBatter;
-import aileen.infusedearth.items.ingotSelenium;
-import aileen.infusedearth.items.pickaxeSelenium;
-import aileen.infusedearth.items.seleniumstick;
-import aileen.infusedearth.items.shovelSelenium;
-import aileen.infusedearth.items.swordSelenium;
-import aileen.infusedearth.items.testitem;
+import aileen.infusedearth.items.*;
 import aileen.infusedearth.items.armor.armor_selenium_main;
+import aileen.infusedearth.libs.DBController;
+import aileen.infusedearth.network.blocks.netcable;
 import aileen.infusedearth.network.blocks.netchest;
 import aileen.infusedearth.network.blocks.netcontroller;
+import aileen.infusedearth.network.tileentitys.Tilenetcable;
 import aileen.infusedearth.network.tileentitys.Tilenetchest;
 import aileen.infusedearth.network.tileentitys.Tilenetcontroller;
 import aileen.infusedearth.omod.EnumToolMaterialCORE;
@@ -47,6 +22,8 @@ import aileen.infusedearth.omod.ItemPickAxeCORE;
 import aileen.infusedearth.omod.ItemSpateCORE;
 import aileen.infusedearth.other.FuelHandler;
 import aileen.infusedearth.proxies.CoreCommonProxy;
+import aileen.infusedearth.proxies.IProxy;
+import aileen.infusedearth.tileentity.TileHempBlock;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -57,6 +34,17 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFlower;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = "infusedearth", name = "Infused Earth Mod", version = "0.0.4")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = "infusedearth", packetHandler = PacketHandler.class)
@@ -105,7 +93,10 @@ public class infusedearth {
 	public static int netcontrollerId = 3358;
 	
 	public static Block netchest;
-	public static int netchestId = 3359;	
+	public static int netchestId = 3359;
+
+	public static Block netcable;
+	public static int netcableId = 3362;
 
 	// ARMOR
 	public static final String[] SELENIUM_ARMOR_ICONS = { "itemArmorSeleniumHelmet", "itemArmorSeleniumChestplate", "itemArmorSeleniumLegs", "itemArmorSeleniumBoots" };
@@ -180,20 +171,24 @@ public class infusedearth {
 	public static boolean rf2leather = true;
 
 	public static Icon torchFX;
-
+    public IProxy proxy;
+    public static DBController database = DBController.getInstance();
+    public String worldfolder = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigHandler.load(event);
+        database.initDBConnection();
+        //System.out.println(worldfolder);
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-
 		GameRegistry.registerWorldGenerator(new main());
 		seleniumOre = new ore_selenium(seleniumOreId, Material.rock);
 
 		netcontroller = new netcontroller(netcontrollerId, Material.piston);
 		netchest = new netchest(netchestId, Material.piston);
+		netcable = new netcable(netcableId, Material.piston);
 		
 		testitem = new testitem(testitemId);
 		HempPlant = new HempPlant(this.HempPlantId);
@@ -242,6 +237,7 @@ public class infusedearth {
 		
 		MinecraftForge.addGrassSeed(HempSeeds2Drop, 15);
 		MinecraftForge.EVENT_BUS.register(new VanillaMobDrops());
+		MinecraftForge.EVENT_BUS.register(new EntityEatHempBlock());
 		GameRegistry.registerFuelHandler(new FuelHandler());
 		Proxy.registerHandlers();
 	}
@@ -256,6 +252,8 @@ private void registerItemStack(){
 	private void registerTiles(){
 		GameRegistry.registerTileEntity(Tilenetcontroller.class,"NetControllerTileEntity");
 		GameRegistry.registerTileEntity(Tilenetchest.class,"NetChestTileEntity");
+		GameRegistry.registerTileEntity(Tilenetcable.class,"NetCableTileEntity");
+		GameRegistry.registerTileEntity(TileHempBlock.class,"HempBlockTileEntity");
 	}
 	
 	private void registerBlocks() {
@@ -264,6 +262,7 @@ private void registerItemStack(){
 		GameRegistry.registerBlock(iceflower, "Iceflower");
 		GameRegistry.registerBlock(netcontroller, "Network Controller");
 		GameRegistry.registerBlock(netchest, "Network Chest");
+		GameRegistry.registerBlock(netcable, "Network Cable");
 		GameRegistry.registerBlock(HempPlant, "Hemp Plant");
 		GameRegistry.registerBlock(HempBlock, "Hemp Block");
 	}
@@ -328,6 +327,7 @@ private void registerItemStack(){
 		LanguageRegistry.addName(seleniumstick, "Selenium Stick");
 		LanguageRegistry.addName(netcontroller, "Network Controller");
 		LanguageRegistry.addName(netchest, "Network Chest");
+		LanguageRegistry.addName(netcable, "Network Cable");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.ctab_blocks", "Infused Earth Blocks");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.ctab_items", "Infused Earth Items");
 	}

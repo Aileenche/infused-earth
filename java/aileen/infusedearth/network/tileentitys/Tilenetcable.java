@@ -10,13 +10,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
-public class Tilenetchest extends TileEntity implements NetworkBase, INetworkTile, IColorable {
+public class Tilenetcable extends TileEntity implements NetworkBase, INetworkTile, IColorable {
     private int lastpulse = 0;
     private int style = 0;
 
     @Override
     public int get_internal_id() {
-        return 2;
+        return 3;
     }
 
     @Override

@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.world.World;
 
-public enum Particles {	
-	FLAME;
+public enum Particles {
+    FLAMEBLUE,FLAMERED,FLAMEGREEN,FLAME;
 	
 	public void spawnParticle(World world, double x, double y, double z, double motionX, double motionY, double motionZ) {
 		Minecraft mc = Minecraft.getMinecraft();
@@ -27,9 +27,18 @@ public enum Particles {
 			
 			EntityFX particleEffect = null;
 			switch(this) {
-				case FLAME:
-					particleEffect = new EntityFlameFX(world, x, y, z, 0, 0, 0);
-					break;
+                case FLAME:
+                    particleEffect = new EntityFlameFX(world, x, y, z, 0, 0, 0);
+                    break;
+                case FLAMERED:
+                    particleEffect = new EntityFlameREDFx(world, x, y, z, 0, 0, 0);
+                    break;
+                case FLAMEGREEN:
+                    particleEffect = new EntityFlameGREENFx(world, x, y, z, 0, 0, 0);
+                    break;
+                case FLAMEBLUE:
+                    particleEffect = new EntityFlameBLUEFx(world, x, y, z, 0, 0, 0);
+                    break;
 			}
 			
 			if (particleEffect != null) {

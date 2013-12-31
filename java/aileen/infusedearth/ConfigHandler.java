@@ -14,6 +14,7 @@ public class ConfigHandler {
 	infusedearth.iceflowerId = config.get("BlockIds", "Ice  Flower", infusedearth.iceflowerId).getInt();
 	infusedearth.netcontrollerId = config.get("NetworkBlockIds", "NetController", infusedearth.netcontrollerId).getInt();
 	infusedearth.netchestId = config.get("NetworkBlockIds", "NetChest", infusedearth.netchestId).getInt();
+	infusedearth.netcableId = config.get("NetworkBlockIds", "NetCable", infusedearth.netcableId).getInt();
 	infusedearth.seleniumOreMaxHeight = config.get("Oreconfig", "SeleniumOreMaxHeight", infusedearth.seleniumOreMaxHeight).getInt();
 	infusedearth.seleniumOreVeins = config.get("OreConfig", "SeleniumOreVeins", infusedearth.seleniumOreVeins).getInt();
 	infusedearth.seleniumOreClusterSize = config.get("OreConfig","SeleniumOreClusterSize", infusedearth.seleniumOreClusterSize).getInt();
@@ -36,6 +37,5 @@ public class ConfigHandler {
 	infusedearth.selFeetId = config.get("ItemIds", "Selenium Boots", infusedearth.selFeetId).getInt();
 	infusedearth.rf2leather = config.get("Misc Settings", "Rotten Flesh to Leather", infusedearth.rf2leather).getBoolean(infusedearth.rf2leather);
 	config.save();
-	System.out.print("[Infused Earth] Config Geladen");
 	}
 }

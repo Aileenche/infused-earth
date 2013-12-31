@@ -1,22 +1,16 @@
 package aileen.infusedearth.entitys;
 
 import aileen.infusedearth.infusedearth;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.item.Item;
+import net.minecraft.entity.passive.*;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 public class VanillaMobDrops {
 	public static double rand;
+
+
+
+
 
 	@ForgeSubscribe
 	public void onEntityDrop(LivingDropsEvent event) {
