@@ -42,7 +42,8 @@ public class EntityEatHempBlock {
                     }
                 }
             }
-        } if (event.entityLiving instanceof EntityCow) {
+        }
+        if (event.entityLiving instanceof EntityCow) {
             if (event.entityLiving.getActivePotionEffects().size() == 0) {
                 int xCoord = (int) ((EntityCow) event.entityLiving).posX;
                 int yCoord = (int) ((EntityCow) event.entityLiving).posY;
@@ -66,7 +67,8 @@ public class EntityEatHempBlock {
                     }
                 }
             }
-        } if (event.entityLiving instanceof EntityPig) {
+        }
+        if (event.entityLiving instanceof EntityPig) {
             if (event.entityLiving.getActivePotionEffects().size() == 0) {
                 int xCoord = (int) ((EntityPig) event.entityLiving).posX;
                 int yCoord = (int) ((EntityPig) event.entityLiving).posY;
@@ -90,7 +92,8 @@ public class EntityEatHempBlock {
                     }
                 }
             }
-        } if (event.entityLiving instanceof EntityChicken) {
+        }
+        if (event.entityLiving instanceof EntityChicken) {
             if (event.entityLiving.getActivePotionEffects().size() == 0) {
                 int xCoord = (int) ((EntityChicken) event.entityLiving).posX;
                 int yCoord = (int) ((EntityChicken) event.entityLiving).posY;
