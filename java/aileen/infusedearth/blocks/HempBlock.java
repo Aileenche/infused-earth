@@ -40,4 +40,19 @@ public class HempBlock extends BlockContainer {
         return true;
     }
 
+    @Override
+	public boolean isOpaqueCube() {
+		return false;
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+
+	@Override
+	public int getRenderType() {
+		return infusedearth.HempBlockTesrId;
+	}
+
 }

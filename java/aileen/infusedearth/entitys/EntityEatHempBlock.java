@@ -1,10 +1,7 @@
 package aileen.infusedearth.entitys;
 
 import aileen.infusedearth.tileentity.TileHempBlock;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.*;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -15,7 +12,7 @@ public class EntityEatHempBlock {
 
     @ForgeSubscribe
     public void onEntityIsNear(LivingEvent event) {
-        if (event.entityLiving instanceof EntitySheep || event.entityLiving instanceof EntityCow || event.entityLiving instanceof EntityPig || event.entityLiving instanceof EntityChicken) {
+        if (event.entityLiving instanceof EntitySheep) {
             if (event.entityLiving.getActivePotionEffects().size() == 0) {
                 int xCoord = (int) ((EntitySheep) event.entityLiving).posX;
                 int yCoord = (int) ((EntitySheep) event.entityLiving).posY;
@@ -82,6 +79,106 @@ public class EntityEatHempBlock {
                                 ((EntityPig) event.entityLiving).getNavigator().setPath(path, 1.0F);
                                 if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
                                     ((EntityPig) event.entityLiving).inLove = 1200;
+                                    ((TileHempBlock) te).getEaten(event.entityLiving);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (event.entityLiving instanceof EntityHorse) {
+            if (event.entityLiving.getActivePotionEffects().size() == 0) {
+                int xCoord = (int) ((EntityHorse) event.entityLiving).posX;
+                int yCoord = (int) ((EntityHorse) event.entityLiving).posY;
+                int zCoord = (int) ((EntityHorse) event.entityLiving).posZ;
+                for (int i = 0; i < 32; i++) {
+                    for (int j = 0; j < 32; j++) {
+                        for (int k = 0; k < 32; k++) {
+                            int newX = (xCoord - 16) + i;
+                            int newY = (yCoord - 16) + j;
+                            int newZ = (zCoord - 16) + k;
+                            TileEntity te = ((EntityHorse) event.entityLiving).worldObj.getBlockTileEntity(newX, newY, newZ);
+                            if (te instanceof TileHempBlock) {
+                                PathEntity path = ((EntityHorse) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
+                                ((EntityHorse) event.entityLiving).getNavigator().setPath(path, 1.0F);
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                    ((EntityHorse) event.entityLiving).inLove = 1200;
+                                    ((TileHempBlock) te).getEaten(event.entityLiving);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (event.entityLiving instanceof EntityWolf) {
+            if (event.entityLiving.getActivePotionEffects().size() == 0) {
+                int xCoord = (int) ((EntityWolf) event.entityLiving).posX;
+                int yCoord = (int) ((EntityWolf) event.entityLiving).posY;
+                int zCoord = (int) ((EntityWolf) event.entityLiving).posZ;
+                for (int i = 0; i < 32; i++) {
+                    for (int j = 0; j < 32; j++) {
+                        for (int k = 0; k < 32; k++) {
+                            int newX = (xCoord - 16) + i;
+                            int newY = (yCoord - 16) + j;
+                            int newZ = (zCoord - 16) + k;
+                            TileEntity te = ((EntityWolf) event.entityLiving).worldObj.getBlockTileEntity(newX, newY, newZ);
+                            if (te instanceof TileHempBlock) {
+                                PathEntity path = ((EntityWolf) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
+                                ((EntityWolf) event.entityLiving).getNavigator().setPath(path, 1.0F);
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                    ((EntityWolf) event.entityLiving).inLove = 1200;
+                                    ((TileHempBlock) te).getEaten(event.entityLiving);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (event.entityLiving instanceof EntityMooshroom) {
+            if (event.entityLiving.getActivePotionEffects().size() == 0) {
+                int xCoord = (int) ((EntityMooshroom) event.entityLiving).posX;
+                int yCoord = (int) ((EntityMooshroom) event.entityLiving).posY;
+                int zCoord = (int) ((EntityMooshroom) event.entityLiving).posZ;
+                for (int i = 0; i < 32; i++) {
+                    for (int j = 0; j < 32; j++) {
+                        for (int k = 0; k < 32; k++) {
+                            int newX = (xCoord - 16) + i;
+                            int newY = (yCoord - 16) + j;
+                            int newZ = (zCoord - 16) + k;
+                            TileEntity te = ((EntityMooshroom) event.entityLiving).worldObj.getBlockTileEntity(newX, newY, newZ);
+                            if (te instanceof TileHempBlock) {
+                                PathEntity path = ((EntityWolf) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
+                                ((EntityMooshroom) event.entityLiving).getNavigator().setPath(path, 1.0F);
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                    ((EntityMooshroom) event.entityLiving).inLove = 1200;
+                                    ((TileHempBlock) te).getEaten(event.entityLiving);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (event.entityLiving instanceof EntityOcelot) {
+            if (event.entityLiving.getActivePotionEffects().size() == 0) {
+                int xCoord = (int) ((EntityOcelot) event.entityLiving).posX;
+                int yCoord = (int) ((EntityOcelot) event.entityLiving).posY;
+                int zCoord = (int) ((EntityOcelot) event.entityLiving).posZ;
+                for (int i = 0; i < 32; i++) {
+                    for (int j = 0; j < 32; j++) {
+                        for (int k = 0; k < 32; k++) {
+                            int newX = (xCoord - 16) + i;
+                            int newY = (yCoord - 16) + j;
+                            int newZ = (zCoord - 16) + k;
+                            TileEntity te = ((EntityOcelot) event.entityLiving).worldObj.getBlockTileEntity(newX, newY, newZ);
+                            if (te instanceof TileHempBlock) {
+                                PathEntity path = ((EntityOcelot) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
+                                ((EntityOcelot) event.entityLiving).getNavigator().setPath(path, 1.0F);
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                    ((EntityOcelot) event.entityLiving).inLove = 1200;
                                     ((TileHempBlock) te).getEaten(event.entityLiving);
                                 }
                             }

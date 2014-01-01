@@ -69,6 +69,8 @@ public class infusedearth {
 		}
 	};
 
+    public static int HempBlockTesrId;
+
 	// HARDBLOCKS
 
 	public static Block seleniumOre;
@@ -240,6 +242,7 @@ public class infusedearth {
 		MinecraftForge.EVENT_BUS.register(new EntityEatHempBlock());
 		GameRegistry.registerFuelHandler(new FuelHandler());
 		Proxy.registerHandlers();
+        Proxy.initRenderers();
 	}
 
 	@EventHandler

@@ -10,4 +10,8 @@ public class CoreCommonProxy
 	public void registerHandlers() {
 		TickRegistry.registerTickHandler(new PlayerTickHandler(), Side.SERVER);
 	}
+
+    public void initRenderers(){
+
+    }
 }
