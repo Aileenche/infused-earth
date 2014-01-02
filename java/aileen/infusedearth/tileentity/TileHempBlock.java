@@ -1,5 +1,6 @@
 package aileen.infusedearth.tileentity;
 
+import aileen.infusedearth.infusedearth;
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,75 +13,8 @@ import net.minecraft.tileentity.TileEntity;
  */
 
 public class TileHempBlock extends TileEntity {
-    public int uses_left = 13;
-
-/*    public AxisAlignedBB getRenderBoundingBox(){
-        double x1 = xCoord;
-        double x2 = yCoord;
-        double y1 = zCoord;
-        double y2 = xCoord + 1;
-        double z1 = yCoord + 1;
-        double z2 = zCoord + 1;
-
-        switch(state){
-            case 16:
-            default:
-                break;
-            case 15:
-                y2 -= 0.05F;
-                break;
-            case 14:
-                y2 -= 0.1F;
-                break;
-            case 13:
-                y2 -= 0.15F;
-                break;
-            case 12:
-                y2 -= 0.2F;
-                break;
-            case 11:
-                y2 -= 0.25F;
-                break;
-            case 10:
-                y2 -= 0.3F;
-                break;
-            case 9:
-                y2 -= 0.35F;
-                break;
-            case 8:
-                y2 -= 0.4F;
-                break;
-            case 7:
-                y2 -= 0.45F;
-                break;
-            case 6:
-                y2 -= 0.5F;
-                break;
-            case 5:
-                y2 -= 0.55F;
-                break;
-            case 4:
-                y2 -= 0.6F;
-                break;
-            case 3:
-                y2 -= 0.65F;
-                break;
-            case 2:
-                y2 -= 0.7F;
-                break;
-            case 1:
-                y2 -= 0.75F;
-                break;
-
-        }
-
-        AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(x1,y1,z1,x2,y2,z2);
-        return bb;
-    }*/
-
-    public Float getscaleY(){
-        FMLLog.getLogger().info("Sending new scale to TESR state: " + this.uses_left);
-        switch (this.uses_left){
+    public Float getscaleY() {
+        switch (infusedearth.database.getHempBlockState(xCoord, yCoord, zCoord, worldObj.provider.dimensionId)) {
             case 16:
                 return 1.0F;
             case 15:
@@ -112,11 +46,18 @@ public class TileHempBlock extends TileEntity {
             case 2:
                 return 0.16F;
             case 1:
-                return 0.8F;
+                return 0.08F;
         }
         return 0F;
     }
 
+
+
+
+
+    public void deleteHempBlock(){
+        infusedearth.database.deleteHempBlock(xCoord,yCoord,zCoord,worldObj.provider.dimensionId);
+    }
     public void getEaten(EntityLivingBase entity) {
         if (!worldObj.isRemote) {
             FMLLog.getLogger().info("called....");
@@ -129,18 +70,22 @@ public class TileHempBlock extends TileEntity {
             entity.addPotionEffect(new PotionEffect(Potion.regeneration.id, 1200));
             entity.addPotionEffect(new PotionEffect(Potion.resistance.id, 1200));
             entity.addPotionEffect(new PotionEffect(Potion.waterBreathing.id, 1200));
-            if(uses_left > 1){
-                uses_left = uses_left-1;
-                FMLLog.getLogger().info("New State: "+uses_left);
+            int temp = infusedearth.database.getHempBlockState(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+            if (temp > 1) {
+                temp = temp - 1;
+                infusedearth.database.updateHempBlockState(xCoord, yCoord, zCoord, worldObj.provider.dimensionId, temp);
+                FMLLog.getLogger().info("New State: " + temp);
             } else {
-                worldObj.setBlockToAir(xCoord,yCoord,zCoord);
-                worldObj.removeBlockTileEntity(xCoord,yCoord,zCoord);
+                worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+                deleteHempBlock();
+                worldObj.removeBlockTileEntity(xCoord, yCoord, zCoord);
                 FMLLog.getLogger().info("Removed!");
             }
-            worldObj.markBlockForRenderUpdate(xCoord,yCoord,zCoord);
+            worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
         }
     }
-        @Override
+
+    @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readFromNBT(par1NBTTagCompound);
     }

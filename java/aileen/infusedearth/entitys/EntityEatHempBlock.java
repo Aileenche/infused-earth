@@ -27,7 +27,7 @@ public class EntityEatHempBlock {
                             if (te instanceof TileHempBlock) {
                                 PathEntity path = ((EntitySheep) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
                                 ((EntitySheep) event.entityLiving).getNavigator().setPath(path, 1.0F);
-                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 3) {
                                     ((EntitySheep) event.entityLiving).inLove = 1200;
                                     ((TileHempBlock) te).getEaten(event.entityLiving);
                                 }
@@ -52,7 +52,7 @@ public class EntityEatHempBlock {
                             if (te instanceof TileHempBlock) {
                                 PathEntity path = ((EntityCow) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
                                 ((EntityCow) event.entityLiving).getNavigator().setPath(path, 1.0F);
-                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 3) {
                                     ((EntityCow) event.entityLiving).inLove = 1200;
                                     ((TileHempBlock) te).getEaten(event.entityLiving);
                                 }
@@ -77,7 +77,7 @@ public class EntityEatHempBlock {
                             if (te instanceof TileHempBlock) {
                                 PathEntity path = ((EntityPig) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
                                 ((EntityPig) event.entityLiving).getNavigator().setPath(path, 1.0F);
-                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 3) {
                                     ((EntityPig) event.entityLiving).inLove = 1200;
                                     ((TileHempBlock) te).getEaten(event.entityLiving);
                                 }
@@ -102,7 +102,7 @@ public class EntityEatHempBlock {
                             if (te instanceof TileHempBlock) {
                                 PathEntity path = ((EntityHorse) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
                                 ((EntityHorse) event.entityLiving).getNavigator().setPath(path, 1.0F);
-                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 3) {
                                     ((EntityHorse) event.entityLiving).inLove = 1200;
                                     ((TileHempBlock) te).getEaten(event.entityLiving);
                                 }
@@ -127,7 +127,7 @@ public class EntityEatHempBlock {
                             if (te instanceof TileHempBlock) {
                                 PathEntity path = ((EntityWolf) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
                                 ((EntityWolf) event.entityLiving).getNavigator().setPath(path, 1.0F);
-                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 3) {
                                     ((EntityWolf) event.entityLiving).inLove = 1200;
                                     ((TileHempBlock) te).getEaten(event.entityLiving);
                                 }
@@ -152,7 +152,7 @@ public class EntityEatHempBlock {
                             if (te instanceof TileHempBlock) {
                                 PathEntity path = ((EntityWolf) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
                                 ((EntityMooshroom) event.entityLiving).getNavigator().setPath(path, 1.0F);
-                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 3) {
                                     ((EntityMooshroom) event.entityLiving).inLove = 1200;
                                     ((TileHempBlock) te).getEaten(event.entityLiving);
                                 }
@@ -177,7 +177,7 @@ public class EntityEatHempBlock {
                             if (te instanceof TileHempBlock) {
                                 PathEntity path = ((EntityOcelot) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
                                 ((EntityOcelot) event.entityLiving).getNavigator().setPath(path, 1.0F);
-                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 3) {
                                     ((EntityOcelot) event.entityLiving).inLove = 1200;
                                     ((TileHempBlock) te).getEaten(event.entityLiving);
                                 }
@@ -202,7 +202,7 @@ public class EntityEatHempBlock {
                             if (te instanceof TileHempBlock) {
                                 PathEntity path = ((EntityChicken) event.entityLiving).getNavigator().getPathToXYZ((double) newX, (double) newY, (double) newZ);
                                 ((EntityChicken) event.entityLiving).getNavigator().setPath(path, 1.0F);
-                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 2) {
+                                if ((event.entityLiving).getDistance((double) newX, (double) newY, (double) newZ) < 3) {
                                     ((EntityChicken) event.entityLiving).inLove = 1200;
                                     ((TileHempBlock) te).getEaten(event.entityLiving);
                                 }

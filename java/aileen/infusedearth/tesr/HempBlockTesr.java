@@ -1,7 +1,6 @@
 package aileen.infusedearth.tesr;
 
 import aileen.infusedearth.tileentity.TileHempBlock;
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -22,6 +21,7 @@ public class HempBlockTesr extends TileEntitySpecialRenderer{
         myTexture = new ResourceLocation("infusedearth", "textures/customRenderer/HempBlock.png");
     }
 
+
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float f){
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z + 1.0F);
@@ -30,7 +30,7 @@ public class HempBlockTesr extends TileEntitySpecialRenderer{
         TileHempBlock te = null;
 
         if(tileEntity instanceof TileHempBlock){
-            FMLLog.getLogger().info("Found Tileentity for TESR Transforming!");
+            //FMLLog.getLogger().info("Found Tileentity for TESR Transforming!");
             te = (TileHempBlock) tileEntity;
         }
         if(te != null){

@@ -1,7 +1,6 @@
 package aileen.infusedearth.libs;
 
 import cpw.mods.fml.common.FMLLog;
-import net.minecraft.client.Minecraft;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,8 +9,7 @@ import java.util.List;
 public class DBController {
     private static final DBController dbcontroller = new DBController();
     private static Connection connection;
-    private static String mcDir = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
-    private static final String DB_PATH = mcDir + "/infusedearthdb.db";
+
 
     static {
         try {
@@ -29,7 +27,7 @@ public class DBController {
         return dbcontroller;
     }
 
-    public void initDBConnection() {
+    public void initDBConnection(String DB_PATH) {
         try {
             if (connection != null)
                 return;
@@ -268,16 +266,74 @@ public class DBController {
         }
     }
 
-    public void changestyle(int x,int y,int z, int world, int style){
+    public void addHempBlock(int x, int y, int z, int world) {
         try {
             Statement q = connection.createStatement();
-            q.execute("UPDATE `networkblocks` SET `style` = '"+style+"' WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
+            createHempTable();
+            q.execute("INSERT INTO `hempblocks` ( x, y, z, world, state) VALUES ('" + x + "','" + y + "','" + z + "','" + world + "','16')");
         } catch (SQLException e) {
             FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
             e.printStackTrace();
         }
     }
-    public int getcolorized(int x,int y,int z, int world) {
+
+    public void updateHempBlockState(int x, int y, int z, int world, int state) {
+        try {
+            Statement q = connection.createStatement();
+            q.execute("UPDATE `hempblocks` SET `state` = '" + state + "' WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
+        } catch (SQLException e) {
+            FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
+            e.printStackTrace();
+        }
+    }
+    public int getHempBlockState(int x, int y, int z, int world) {
+        try {
+            Statement q = connection.createStatement();
+            ResultSet rs = q.executeQuery("SELECT `state` FROM `hempblocks` WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
+            String[][] temp = rs2array(rs);
+            if (temp.length != 0) {
+                return Integer.parseInt(temp[0][0]);
+            }
+        } catch (SQLException e) {
+            FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void deleteHempBlock(int x, int y, int z, int world) {
+        try {
+            Statement q = connection.createStatement();
+            q.executeUpdate("DELETE FROM `hempblocks` WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
+        } catch (SQLException e) {
+            FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
+            e.printStackTrace();
+        }
+    }
+    public void createHempTable() {
+        try {
+            Statement q = connection.createStatement();
+            ResultSet rs = q.executeQuery("SELECT `name` FROM sqlite_master WHERE type='table' AND name='hempblocks';");
+            if (countResultSet(rs) == 0) {
+                q.execute("CREATE TABLE `hempblocks` (x INTEGER, y INTEGER, z INTEGER, world INTEGER, state INTEGER)");
+            }
+        } catch (SQLException e) {
+            FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
+            e.printStackTrace();
+        }
+    }
+
+    public void changestyle(int x, int y, int z, int world, int style) {
+        try {
+            Statement q = connection.createStatement();
+            q.execute("UPDATE `networkblocks` SET `style` = '" + style + "' WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
+        } catch (SQLException e) {
+            FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
+            e.printStackTrace();
+        }
+    }
+
+    public int getcolorized(int x, int y, int z, int world) {
         try {
             Statement q = connection.createStatement();
             ResultSet rs = q.executeQuery("SELECT `style` FROM `networkblocks` WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
@@ -292,7 +348,7 @@ public class DBController {
         return 0;
     }
 
-    public void registerBlockToNetwork(String networkID, int internalBlockId, int x, int y, int z, int world, int lastactiveblock, int controllerX, int controllerY, int controllerZ,int style) {
+    public void registerBlockToNetwork(String networkID, int internalBlockId, int x, int y, int z, int world, int lastactiveblock, int controllerX, int controllerY, int controllerZ, int style) {
         try {
             //FMLLog.getLogger().info("Adding " + internalBlockId + " [" + x + "|" + y + "|" + z + "] to network");
             Statement q = connection.createStatement();
@@ -323,36 +379,6 @@ public class DBController {
         }
     }
 
-    /*    public void deleteFromNetwork(int id) {
-            try {
-                Statement q = connection.createStatement();
-                q.executeUpdate("DELETE FROM `networkblocks` WHERE `id` = '" + id + "';");
-                boolean temp = true;
-                q.execute("CREATE TABLE `temp` (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE, blockid INTEGER, checked BOOLEAN )");
-                q.execute("INSERT INTO `temp` (`id`,`blockid`,`checked`) VALUES ( null, '" + id + "', 'false' )");
-                while (temp == true) {
-                    ResultSet rs = q.executeQuery("SELECT * FROM `networkblocks` WHERE `lastactiveblock` = '" + id + "'");
-                    String[][] temparray = rs2array(rs);
-                    rs.close();
-                    q.execute("UPDATE `temp` SET`checked` = 'true' WHERE `blockid` = '" + id + "'");
-                    q.executeUpdate("DELETE FROM `networkblocks` WHERE `id` = '" + id + "';");
-                    for (int i = 0; i < temparray.length; i++) {
-                        q.execute("INSERT INTO `temp` (`id`,`blockid`,`checked`) VALUES ( null, '" + temparray[i][0] + "', 'false' )");
-                    }
-                    ResultSet rs2 = q.executeQuery("SELECT * FROM `temp` WHERE `checked` = 'false'");
-                    String[][] temparray2 = rs2array(rs2);
-                    if (temparray2.length != 0) {
-                        id = Integer.parseInt(temparray2[0][1]);
-                    } else {
-                        temp = false;
-                    }
-                }
-                q.executeUpdate("DROP TABLE IF EXISTS `temp`");
-            } catch (SQLException e) {
-                FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
-                e.printStackTrace();
-            }
-        }*/
     public void deleteSelfFromNetwork(int id) {
         try {
             Statement q = connection.createStatement();

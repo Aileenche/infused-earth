@@ -53,7 +53,7 @@ public class netcable extends BlockContainer {
                 int tempID = ((Tilenetcable) te).get_Icon();
                 if(tempID != 0){
                     Block tempBlock = blocksList[tempID];
-                    ItemStack tempItemStack = new ItemStack(tempBlock);
+                    ItemStack tempItemStack = new ItemStack(tempBlock,meta);
                     return tempItemStack.getIconIndex();
                 }
             } else {
