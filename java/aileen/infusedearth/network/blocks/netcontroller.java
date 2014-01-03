@@ -43,27 +43,20 @@ public class netcontroller extends BlockContainer {
         return null;
     }
 
-    @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         int meta = world.getBlockMetadata(x, y, z);
         TileEntity te = world.getBlockTileEntity(x, y, z);
         if ((te instanceof Tilenetcontroller)) {
-            if (iconoverride != null) {
-                int tempID = ((Tilenetcontroller) te).get_Icon();
-                if(tempID != 0){
-                    Block tempBlock = blocksList[tempID];
-                    ItemStack tempItemStack = new ItemStack(tempBlock);
-                    return tempItemStack.getIconIndex();
-                }
-            } else {
-                int tempID = ((Tilenetcontroller) te).get_Icon();
-                if(tempID != 0){
-                    Block tempBlock = blocksList[tempID];
-                    ItemStack tempItemStack = new ItemStack(tempBlock);
-                    return tempItemStack.getIconIndex();
-                }
-                return this.iconorig;
+            String tempID = ((Tilenetcontroller) te).get_Icon();
+            String[] TEMPID = tempID.split(";");
+
+            if (Integer.parseInt(TEMPID[0]) != 0 && TEMPID[1] != "") {
+                Block tempBlock = blocksList[Integer.parseInt(TEMPID[0])];
+                ItemStack tempItemStack = new ItemStack(tempBlock,1, Integer.parseInt(TEMPID[1]));
+                return tempItemStack.getIconIndex();
             }
+            return this.iconorig;
+
         }
         return getIcon(side, meta);
     }
@@ -124,14 +117,20 @@ public class netcontroller extends BlockContainer {
                     ItemStack held = player.getHeldItem();
                     if (held != null && held.itemID < 4096) {
                         Block tempBlock = blocksList[held.itemID];
-                        if (tempBlock.blockResistance > 0.0) {
+                        if (tempBlock.blockResistance > 0.0 || held.itemID == 351) {
+                            if (held.itemID == 351) {
+                                te.set_Icon(35, held.getItemDamage());
+                            } else if (held.itemID == 35) {
+                                te.set_Icon(35, (~held.getItemDamage() & 15));
+                            } else {
+                                te.set_Icon(tempBlock.blockID, held.getItemDamage());
+                            }
                             iconoverride = held.getIconIndex();
-                            te.set_Icon(tempBlock.blockID);
                         } else {
-                            te.set_Icon(0);
+                            te.set_Icon(0, 0);
                         }
                     } else {
-                        te.set_Icon(0);
+                        te.set_Icon(0,0);
                     }
                 }
             }

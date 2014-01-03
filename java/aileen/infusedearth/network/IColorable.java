@@ -7,6 +7,6 @@ import net.minecraft.util.Icon;
  */
 public interface IColorable {
     public Icon iconoverride = null;
-    public int get_Icon();
-    public void set_Icon(int i);
+    public String get_Icon();
+    public void set_Icon(int i,int meta);
 }

@@ -13,6 +13,7 @@ import net.minecraftforge.common.ForgeDirection;
 public class Tilenetcable extends TileEntity implements NetworkBase, INetworkTile, IColorable {
     private int lastpulse = 0;
     private int style = 0;
+    private int meta = 0;
 
     @Override
     public int get_internal_id() {
@@ -28,7 +29,7 @@ public class Tilenetcable extends TileEntity implements NetworkBase, INetworkTil
                     colorizeFlame(pulsecounter);
                     sendPulse(direction, pulsecounter, controllerX, controllerY, controllerZ);
                 } else {
-                    infusedearth.database.registerBlockToNetwork(infusedearth.database.getNetworkId(controllerX, controllerY, controllerZ, worldObj.provider.dimensionId), get_internal_id(), xCoord, yCoord, zCoord, worldObj.provider.dimensionId, infusedearth.database.getOwnDBId(controllerX, controllerY, controllerZ, worldObj.provider.dimensionId), controllerX, controllerY, controllerZ,style);
+                    infusedearth.database.registerBlockToNetwork(infusedearth.database.getNetworkId(controllerX, controllerY, controllerZ, worldObj.provider.dimensionId), get_internal_id(), xCoord, yCoord, zCoord, worldObj.provider.dimensionId, infusedearth.database.getOwnDBId(controllerX, controllerY, controllerZ, worldObj.provider.dimensionId), controllerX, controllerY, controllerZ,style,meta);
                     colorizeFlame(pulsecounter);
                     sendPulse(direction, pulsecounter, controllerX, controllerY, controllerZ);
                 }
@@ -73,13 +74,14 @@ public class Tilenetcable extends TileEntity implements NetworkBase, INetworkTil
     }
 
     @Override
-    public void set_Icon(int i) {
-        style = i;
-        infusedearth.database.changestyle(xCoord, yCoord, zCoord, worldObj.provider.dimensionId, i);
+    public void set_Icon(int i,int meta) {
+        this.style = i;
+        this.meta = meta;
+        infusedearth.database.changestyle(xCoord, yCoord, zCoord, worldObj.provider.dimensionId, i,meta);
     }
 
     @Override
-    public int get_Icon() {
+    public String get_Icon() {
         return infusedearth.database.getcolorized(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
     }
 
@@ -88,11 +90,13 @@ public class Tilenetcable extends TileEntity implements NetworkBase, INetworkTil
     public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readFromNBT(par1NBTTagCompound);
         this.style = par1NBTTagCompound.getInteger("style");
+        this.meta = par1NBTTagCompound.getInteger("meta");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("style", this.style);
+        par1NBTTagCompound.setInteger("meta", this.meta);
     }
 }

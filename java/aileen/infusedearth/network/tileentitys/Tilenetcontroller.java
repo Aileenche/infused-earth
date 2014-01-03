@@ -15,6 +15,8 @@ public class Tilenetcontroller extends TileEntity implements NetworkBase, IColor
 
     private String networkId = "[None]";
     private int pulsecounter = 1;
+    private int style = 0;
+    private int meta = 0;
 
     @Override
     public int get_internal_id() {
@@ -22,12 +24,14 @@ public class Tilenetcontroller extends TileEntity implements NetworkBase, IColor
     }
 
     @Override
-    public void set_Icon(int i) {
-        infusedearth.database.changestyle(xCoord, yCoord, zCoord, worldObj.provider.dimensionId, i);
+    public void set_Icon(int i, int meta) {
+        this.style = i;
+        this.meta = meta;
+        infusedearth.database.changestyle(xCoord, yCoord, zCoord, worldObj.provider.dimensionId, i,meta);
     }
 
     @Override
-    public int get_Icon() {
+    public String get_Icon() {
         return infusedearth.database.getcolorized(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
     }
 
@@ -85,8 +89,8 @@ public class Tilenetcontroller extends TileEntity implements NetworkBase, IColor
         FMLLog.getLogger().info("Changing " + this.networkId + " to " + Id);
         if (this.networkId.equals("[None]")) {
             this.networkId = Id;
-            infusedearth.database.createNetwork(Id);
-            infusedearth.database.registerBlockToNetwork(Id, get_internal_id(), xCoord, yCoord, zCoord, worldObj.provider.dimensionId, -1, xCoord, yCoord, zCoord,0);
+            infusedearth.database.createNetwork();
+            infusedearth.database.registerBlockToNetwork(Id, get_internal_id(), xCoord, yCoord, zCoord, worldObj.provider.dimensionId, -1, xCoord, yCoord, zCoord,style,meta);
             return true;
         }
         return false;
@@ -95,16 +99,17 @@ public class Tilenetcontroller extends TileEntity implements NetworkBase, IColor
     public String gnetworkId() {
         return networkId;
     }
-
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readFromNBT(par1NBTTagCompound);
-        this.networkId = par1NBTTagCompound.getString("networkId");
+        this.style = par1NBTTagCompound.getInteger("style");
+        this.meta = par1NBTTagCompound.getInteger("meta");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setString("networkId", this.networkId);
+        par1NBTTagCompound.setInteger("style", this.style);
+        par1NBTTagCompound.setInteger("meta", this.meta);
     }
 }

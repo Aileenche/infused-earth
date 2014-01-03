@@ -253,12 +253,12 @@ public class DBController {
         return "";
     }
 
-    public void createNetwork(String networkID) {
+    public void createNetwork() {
         try {
             Statement q = connection.createStatement();
             ResultSet rs = q.executeQuery("SELECT `name` FROM sqlite_master WHERE type='table' AND name='networkblocks';");
             if (countResultSet(rs) == 0) {
-                q.execute("CREATE TABLE `networkblocks` (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE, networkid TEXT, networkblock INTEGER, x INTEGER, y INTEGER, z INTEGER,world INTEGER, lastactiveblock INTEGER, controllerX INTEGER, controllerY INTEGER, controllerZ INTEGER, style INTEGER)");
+                q.execute("CREATE TABLE `networkblocks` (id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE, networkid TEXT, networkblock INTEGER, x INTEGER, y INTEGER, z INTEGER,world INTEGER, lastactiveblock INTEGER, controllerX INTEGER, controllerY INTEGER, controllerZ INTEGER, style INTEGER, stylemeta INTEGER)");
             }
         } catch (SQLException e) {
             FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
@@ -323,36 +323,36 @@ public class DBController {
         }
     }
 
-    public void changestyle(int x, int y, int z, int world, int style) {
+    public void changestyle(int x, int y, int z, int world, int style, int stylemeta) {
         try {
             Statement q = connection.createStatement();
-            q.execute("UPDATE `networkblocks` SET `style` = '" + style + "' WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
+            q.execute("UPDATE `networkblocks` SET `style` = '" + style + "',`stylemeta` = '" + stylemeta + "' WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
         } catch (SQLException e) {
             FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
             e.printStackTrace();
         }
     }
 
-    public int getcolorized(int x, int y, int z, int world) {
+    public String getcolorized(int x, int y, int z, int world) {
         try {
             Statement q = connection.createStatement();
-            ResultSet rs = q.executeQuery("SELECT `style` FROM `networkblocks` WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
+            ResultSet rs = q.executeQuery("SELECT `style`,`stylemeta` FROM `networkblocks` WHERE `x`='" + x + "' AND `y`='" + y + "' AND `z`='" + z + "' AND `world`='" + world + "';");
             String[][] temp = rs2array(rs);
             if (temp.length != 0) {
-                return Integer.parseInt(temp[0][0]);
+                return temp[0][0]+";"+temp[0][1];
             }
         } catch (SQLException e) {
             FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
             e.printStackTrace();
         }
-        return 0;
+        return "0;0";
     }
 
-    public void registerBlockToNetwork(String networkID, int internalBlockId, int x, int y, int z, int world, int lastactiveblock, int controllerX, int controllerY, int controllerZ, int style) {
+    public void registerBlockToNetwork(String networkID, int internalBlockId, int x, int y, int z, int world, int lastactiveblock, int controllerX, int controllerY, int controllerZ, int style, int stylemeta) {
         try {
             //FMLLog.getLogger().info("Adding " + internalBlockId + " [" + x + "|" + y + "|" + z + "] to network");
             Statement q = connection.createStatement();
-            q.execute("INSERT INTO `networkblocks` (id, networkid, networkblock, x, y, z, world, lastactiveblock, controllerX, controllerY, controllerZ, style) VALUES (null, '" + networkID + "', '" + internalBlockId + "','" + x + "','" + y + "','" + z + "','" + world + "','" + lastactiveblock + "','" + controllerX + "','" + controllerY + "','" + controllerZ + "','" + style + "')");
+            q.execute("INSERT INTO `networkblocks` (id, networkid, networkblock, x, y, z, world, lastactiveblock, controllerX, controllerY, controllerZ, style, stylemeta) VALUES (null, '" + networkID + "', '" + internalBlockId + "','" + x + "','" + y + "','" + z + "','" + world + "','" + lastactiveblock + "','" + controllerX + "','" + controllerY + "','" + controllerZ + "','" + style + "','" + stylemeta + "')");
         } catch (SQLException e) {
             FMLLog.getLogger().warning("[Infused Earth] Couldn't handle DB-Query");
             e.printStackTrace();
