@@ -5,9 +5,6 @@ import aileen.infusedearth.infusedearth;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 
 public class ore_selenium extends Block {
 	public ore_selenium(int id, Material mat) {
